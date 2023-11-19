@@ -5,7 +5,6 @@
 import os
 import pygame
 from mapa import Juego, Celula, CelulaVacia
-from time import sleep
 
 juego = columnas = filas = None
 
@@ -14,16 +13,8 @@ ALTOVENTANA = 720
 
 LIMITEFPS = 165
 
-def Salir() -> bool:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            exit()
-
-    keystate = pygame.key.get_pressed()
-
-    if keystate[pygame.K_ESCAPE]:
-        return True
-    return False
+COLOREDICION = (56, 107, 69)
+COLORNEGRO = (0, 0, 0)
 
 def numeroUsuario(pregunta: str) -> int:
     while True:
@@ -63,15 +54,15 @@ def assignarCelulasRededor(tablero: list) -> None:
 def getCelulasVivas(tablero: list) -> list:
     return [celula for fila in tablero for celula in fila if celula.estaViva()]
 
-def CicloDeLaVida(tablero: list) -> pygame.sprite.Group:
-    grupoSprites = pygame.sprite.Group()
+def logicaVida(tablero: list) -> None:
     celulasvivas = getCelulasVivas(tablero)
+    funcionescelulas = []
     for celula in celulasvivas:
         # Aqui la celula esta viva 100%
         celula: Celula
         cantidadVivas = len(getCelulasVivas(celula.getCelulasRededor()))
         if (not cantidadVivas == 2) and (not cantidadVivas == 3):
-            celula.matar()
+            funcionescelulas.append(celula.matar)
 
         for celularededorlist in celula.getCelulasRededor():
             # Aqui la celula no sabemos si esta viva o muerta
@@ -82,23 +73,28 @@ def CicloDeLaVida(tablero: list) -> pygame.sprite.Group:
             cantidadVivas = len(getCelulasVivas(celularededor.getCelulasRededor()))
             if celularededor.estaViva():
                 if (not cantidadVivas == 2) and (not cantidadVivas == 3):
-                    celularededor.matar()
+                    funcionescelulas.append(celularededor.matar)
             else:
                 if cantidadVivas == 3:
-                    celularededor.revivir()
-            grupoSprites.add(celularededor)
-        grupoSprites.add(celula)
-    return grupoSprites
+                    funcionescelulas.append(celularededor.revivir)
+    # Esto se hace de esta manera, porque si no, las celulas mueren antes de que las
+    # otras celulas comprueben si las de alrededor estan vivas 
+    for funcioncelula in funcionescelulas:
+        funcioncelula()
 
 def main() -> None:
+    pygame.init()
+
     columnas = numeroUsuario("Cuantas columnas quieres? ")
     filas = numeroUsuario("Cuantas filas quieres? ")
     juego = Juego(columnas=columnas, filas=filas)
-    salir = False
+    salir = start = False
 
     ventana = pygame.display.set_mode((1280, 720))
 
     pygame.display.set_caption('El juego de la vida')
+
+    grupoSprites = pygame.sprite.Group()
 
     reloj = pygame.time.Clock()
 
@@ -106,20 +102,68 @@ def main() -> None:
 
     assignarCelulasRededor(juego.tablero)
 
+    escalax = ANCHOVENTANA /columnas
+    escalay = ALTOVENTANA / filas
+
+    # grupoSprites.add([celula for fila in juego.tablero for celula in fila])
+    # grupoSprites.draw(ventana)
+
+    ventana.fill(COLOREDICION)
+
     while not salir:
+        # Input del jugador
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                salir = True
+                break
+            elif (event.type == pygame.MOUSEBUTTONDOWN) and (not start):
+                # Obtener la posición del ratón y calcular la celda correspondiente
+                x, y = pygame.mouse.get_pos()
+                fila = int(y // escalay)
+                columna = int(x // escalax)
+                # Cambiar el estado de la celda
+                if juego.tablero[fila][columna].estaViva():
+                    juego.tablero[fila][columna].matar()
+                else:
+                    juego.tablero[fila][columna].revivir()
+                juego.tablero[fila][columna].dibujar(ventana)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    start = True if not start else False
+                    grupoSprites.empty()
+                    grupoSprites.add(getCelulasVivas(juego.tablero))
+
+                    ventana.fill(COLOREDICION if not start else COLORNEGRO)
+
+                    grupoSprites.draw(ventana)
+
+        keystate = pygame.key.get_pressed()
+
+        if keystate[pygame.K_ESCAPE]:
+            salir = True
+            break
+
+        # Input del jugador
+
         deltatime = reloj.tick(LIMITEFPS)
-        salir = Salir()
-        grupoSprites = CicloDeLaVida(juego.tablero)
 
-        ventana.fill((0, 0, 0))
+        if start:
+            logicaVida(juego.tablero)
 
-        grupoSprites.draw(ventana)
+            grupoSprites.empty()
+            grupoSprites.add(getCelulasVivas(juego.tablero))
+
+            ventana.fill(COLORNEGRO)
+
+            grupoSprites.draw(ventana)
 
         pygame.display.flip()
-        print(reloj.get_fps())
+    pygame.quit()
 
 if __name__ == "__main__":
     try:    
         main()
     except KeyboardInterrupt:
+        pass
+    finally:
         print(f"{'¡Adios!':~^20}")

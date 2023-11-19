@@ -16,6 +16,9 @@ class Cuadrado(pygame.sprite.Sprite):
     
     def cambiarColor(self, color=(255, 255, 255)):
         self.image.fill(color)
+    
+    def dibujar(self, ventana: pygame.Surface):
+        ventana.blit(self.image, (self.rect.x, self.rect.y))
 
 class CelulaVacia():
     def estaViva(self) -> bool:
@@ -23,8 +26,9 @@ class CelulaVacia():
 
 class Celula(Cuadrado):
     def __init__(self, ancho: int, alto: int, x: int, y: int, viva: bool = False) -> None:
-        super().__init__(ancho, alto, x, y)
         self.viva = viva
+        color = (255, 255, 255) if viva else (0, 0, 0)
+        super().__init__(ancho, alto, x, y, color)
 
     def celulasAdyacentes(self, celulas: list) -> None:
         self.celulas = celulas
@@ -61,13 +65,12 @@ class Juego():
         tablero = []
         x = 0
         y = 0
-        escalax = anchoventana // self.columnas
-        escalay = altoventana // self.filas
+        escalax = anchoventana / self.columnas
+        escalay = altoventana / self.filas
         for fila in range(self.filas):
             tablero.append([])
             for columna in range(self.columnas):
-                viva = random.choices([True, False])
-                viva = viva[0]
+                viva = False
                 tablero[fila].append(Celula(escalax, escalay, x, y, viva))
                 x += escalax
             x = 0
