@@ -6,7 +6,7 @@ This project is a Python implementation of John Horton Conway's Game of Life. Th
 ### Game rules
 There are 2 types of cells:
 
-#### Cell "WHILE", alive
+#### Cell "WHITE", alive
 A cell is alive if it has 2 or 3 living cells around it, neither more nor less, diagonals included, if it has more or less, it dies.
 
 #### Cell "BLACK", dead
