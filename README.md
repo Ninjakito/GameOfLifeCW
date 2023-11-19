@@ -17,6 +17,13 @@ A cell revives if it has exactly 3 living cells around it, otherwise it remains 
 2. Install the requirements with `pip install -r requirements.txt`
 3. Run `python main.py`
 
+In case of downloading the exe, simply run, it accepts arguments in the following order:
+- Columns
+- Rows
+- Resolution width
+- Resolution height
+- FPS limit
+
 ### Usage
 First, it will ask you through the terminal to enter the screen resolution, and then, the number of columns and rows you want the table to have.
 The green color indicates that you can click on the different cells to turn them on or off.
@@ -39,7 +46,14 @@ Una celula revive si tiene exactamente 3 celulas a su alrededor vivas, en caso c
 2. Instala los requisitos con `pip install -r requirements.txt`
 3. Ejecuta `python main.py`
 
+En caso del descargar el exe, simplemente ejecutar, admite argumentos en el orden:
+- Columnas
+- Filas
+- Resolucion ancho
+- Resolucion alto
+- Limite de FPS
+
 ### Uso
 Primero, solicitara por terminal que introduzcas la resolucion de la pantalla, y despues, la cantidad de columnas y filas que quieres que tenga la tabla.
 El color verde indica que puedes hacer click en las distintas celulas para encenderlas o apagarlas, con la tecla 'ESPACIO', puedes cambiar entre el modo edición y el modo vida.
-Con la techa 'ESCAPE' o dandole a la cruz, puedes cerrar la ventana, y con ello, el programa.
+Con la tecla 'ESCAPE' o dandole a la cruz, puedes cerrar la ventana, y con ello, el programa.

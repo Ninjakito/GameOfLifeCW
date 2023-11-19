@@ -2,7 +2,7 @@
 # https://github.com/Ninjakito
 # https://sanchezcalvo.com
 
-import os
+import sys
 import pygame
 from mapa import Juego, Celula, CelulaVacia
 
@@ -11,7 +11,7 @@ juego = columnas = filas = None
 ANCHOVENTANA = 1280
 ALTOVENTANA = 720
 
-LIMITEFPS = 165
+LIMITEFPS = 30
 
 COLOREDICION = (56, 107, 69)
 COLORNEGRO = (0, 0, 0)
@@ -85,10 +85,46 @@ def logicaVida(tablero: list) -> None:
 def main() -> None:
     pygame.init()
 
-    columnas = numeroUsuario("Cuantas columnas quieres?: ")
-    filas = numeroUsuario("Cuantas filas quieres?: ")
-    ANCHOVENTANA = numeroUsuario("De cuantos pixeles de ancho quieres la ventana? (Normalmente son 1920): ")
-    ALTOVENTANA = numeroUsuario("De cuantos pixeles de altura quieres la ventana? (Normalmente son 1080): ")
+    try:
+        columnas = int(sys.argv[1])
+    except IndexError:
+        columnas = numeroUsuario("Cuantas columnas quieres?: ")
+    except TypeError:
+        print("El valor introducido para 'COLUMNAS' tiene que ser un numero entero")
+        columnas = numeroUsuario("Cuantas columnas quieres?: ")
+    
+    try:
+        filas = int(sys.argv[2])
+    except IndexError:
+        filas = numeroUsuario("Cuantas filas quieres?: ")
+    except TypeError:
+        print("El valor introducido para 'FILAS' tiene que ser un numero entero")
+        filas = numeroUsuario("Cuantas filas quieres?: ")
+
+    try:
+        ANCHOVENTANA = int(sys.argv[3])
+    except IndexError:
+        ANCHOVENTANA = numeroUsuario("De cuantos pixeles de ancho quieres la ventana? (Normalmente son 1920): ")
+    except TypeError:
+        print("El valor introducido para 'ANCHOVENTANA' tiene que ser un numero entero")
+        ANCHOVENTANA = numeroUsuario("De cuantos pixeles de ancho quieres la ventana? (Normalmente son 1920): ")
+
+    try:
+        ALTOVENTANA = int(sys.argv[4])
+    except IndexError:
+        ALTOVENTANA = numeroUsuario("De cuantos pixeles de altura quieres la ventana? (Normalmente son 1080): ")
+    except TypeError:
+        print("El valor introducido para 'ALTOVENTANA' tiene que ser un numero entero")
+        ALTOVENTANA = numeroUsuario("De cuantos pixeles de altura quieres la ventana? (Normalmente son 1080): ")
+
+    try:
+        LIMITEFPS = int(sys.argv[5])
+    except IndexError:
+        LIMITEFPS = numeroUsuario("Cuantos FPS quieres? (Es la velocidad en la que se mueven): ")
+    except TypeError:
+        print("El valor introducido para 'LIMITEFPS' tiene que ser un numero entero")
+        LIMITEFPS = numeroUsuario("Cuantos FPS quieres? (Es la velocidad en la que se mueven): ")
+
     juego = Juego(columnas=columnas, filas=filas)
     salir = start = False
 
