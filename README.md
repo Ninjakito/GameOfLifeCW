@@ -18,7 +18,9 @@ A cell revives if it has exactly 3 living cells around it, otherwise it remains 
 3. Run `python main.py`
 
 ### Usage
-"The green color indicates that you can click on the different cells to turn them on or off. With the 'SPACE' key, you can switch between edit mode and life mode."
+First, it will ask you through the terminal to enter the screen resolution, and then, the number of columns and rows you want the table to have.
+The green color indicates that you can click on the different cells to turn them on or off.
+With the ‘SPACE’ key, you can switch between edit mode and life mode. With the ‘ESCAPE’ key or by clicking on the cross, you can close the window, and with it, the program.
 
 ## Español
 Este proyecto es una implementación en Python del Juego de la Vida de John Horton Conway. El Juego de la Vida es un autómata celular ideado por el matemático británico John Horton Conway en 1970. Es un juego de cero jugadores, lo que significa que su evolución está determinada por su estado inicial, sin necesidad de más entradas.
@@ -38,4 +40,6 @@ Una celula revive si tiene exactamente 3 celulas a su alrededor vivas, en caso c
 3. Ejecuta `python main.py`
 
 ### Uso
-El color verde indica que puedes hacer click en las distintas celulas para encenderlas o apagarlas, con la tecla 'ESPACIO', puedes cambiar entre el modo edición y el modo vida
+Primero, solicitara por terminal que introduzcas la resolucion de la pantalla, y despues, la cantidad de columnas y filas que quieres que tenga la tabla.
+El color verde indica que puedes hacer click en las distintas celulas para encenderlas o apagarlas, con la tecla 'ESPACIO', puedes cambiar entre el modo edición y el modo vida.
+Con la techa 'ESCAPE' o dandole a la cruz, puedes cerrar la ventana, y con ello, el programa.

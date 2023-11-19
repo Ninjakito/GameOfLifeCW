@@ -85,12 +85,14 @@ def logicaVida(tablero: list) -> None:
 def main() -> None:
     pygame.init()
 
-    columnas = numeroUsuario("Cuantas columnas quieres? ")
-    filas = numeroUsuario("Cuantas filas quieres? ")
+    columnas = numeroUsuario("Cuantas columnas quieres?: ")
+    filas = numeroUsuario("Cuantas filas quieres?: ")
+    ANCHOVENTANA = numeroUsuario("De cuantos pixeles de ancho quieres la ventana? (Normalmente son 1920): ")
+    ALTOVENTANA = numeroUsuario("De cuantos pixeles de altura quieres la ventana? (Normalmente son 1080): ")
     juego = Juego(columnas=columnas, filas=filas)
     salir = start = False
 
-    ventana = pygame.display.set_mode((1280, 720))
+    ventana = pygame.display.set_mode((ANCHOVENTANA, ALTOVENTANA))
 
     pygame.display.set_caption('El juego de la vida')
 
